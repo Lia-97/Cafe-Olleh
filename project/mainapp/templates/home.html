@@ -47,14 +47,17 @@
 				          <li><a href="#best9">Best 9</a></li>
 				          <li><a href="#coffee">Coffee</a></li>
 				          <li><a href="#review">FAQ</a></li>
-				          <li><a href="{% url 'usersapp:login' %}">Log in</a></li>
-							<li class="menu-has-children"><a href="">{{username}}</a>
-				            <ul>
-				              <li><a href="generic.html">Generic</a></li>
-				              <li><a href="elements.html">Elements</a></li>
+						  {% if user_name %}
+							<li><a href="#">{{user_name}} 님!</a>
+								<ul>
+								  <li><a href="generic.html">내 정보</a></li>
+								  <li><a href="{% url 'logout'%}">Log Out!!</a></li>
+								</ul>
+							</li>
+						  {% else %}
+							<li><a href="{% url 'usersapp:login' %}">Log in</a></li>
+						  {% endif %}
 
-				            </ul>
-				          </li>
 				        </ul>
 				      </nav><!-- #nav-menu-container -->
 			    	</div>

@@ -8,6 +8,12 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/my-login.css">
 </head>
 <body class="my-login-page">
+	{% if error %}
+		<script>
+			alert("{{error}}");
+		</script>
+	{% endif %}
+
 	<section class="h-100">
 		<div class="container h-100">
 			<div class="row justify-content-md-center h-100">
@@ -18,11 +24,10 @@
 					<div class="card fat">
 						<div class="card-body">
 							<h4 class="card-title">Login</h4>
-							<form method="POST" action="{% url 'home' %}">
+							<form method="POST" action="{% url 'usersapp:login' %}">
 								{% csrf_token %}
 								<div class="form-group">
 									<label for="email">E-Mail Address</label>
-
 									<input id="email" type="email" class="form-control" name="email" value="" required autofocus>
 								</div>
 

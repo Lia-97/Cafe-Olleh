@@ -5,4 +5,13 @@ from django.shortcuts import render, redirect
 # Create your views here.
 
 def home(request):
-    return render(request,'home.html')
+    if 'user' in request.session:
+        context={'user_name':request.session.get('user')}
+        return render(request,'home.html',context)
+    else:
+        return render(request,'home.html')
+
+def logout(request):
+    if 'user' in request.session:
+        del request.session['user']
+        return render(request,'home.html')

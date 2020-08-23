@@ -18,11 +18,13 @@
 					<div class="card fat">
 						<div class="card-body">
 							<h4 class="card-title">Reset Password</h4>
-							<form method="POST">
-
+							<form method="POST" action="{% url 'usersapp:pwreset'%}?email={{email}}">
 								<div class="form-group">
 									<label for="new-password">New Password</label>
 									<input id="new-password" type="password" class="form-control" name="password" required autofocus data-eye>
+
+									<label for="re-password">Re Password</label>
+									<input id="re-password" type="password" class="form-control" name="re-password" required autofocus data-eye>
 									<div class="form-text text-muted">
 										Make sure your password is strong and easy to remember
 									</div>

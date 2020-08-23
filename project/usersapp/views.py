@@ -13,17 +13,21 @@ def login(request):
         try:
             user = Users.objects.get(useremail=useremail)
         except Users.DoesNotExist:
-            context = {'error': '계정을 확인하세요'}
+            context = {'error': '아이디 또는 비밀번호가 일치하지 않습니다.'}
+            return render(request,'login.html',context)
         else:
+            user_name=user.username
+            print(user_name)
             if check_password(password, user.password):
-                request.session['user'] = useremail
+                request.session['user'] = user_name
                 return redirect('/mainapp/home/')
             else:
-                context = {'error': '패스워드를 확인하세요'}
+                context = {'error': '아이디 또는 비밀번호가 일치하지 않습니다.'}
+                return render(request, 'login.html', context)
     else:
-        if 'user' in request.session:
-            context = {'msg': '이미 %s 로그인 하셨습니다.' % request.session['user']}
-    return render(request, 'login.html', context)
+        return render(request, 'login.html', context)
+
+
 
 def register(request):
     if request.method =='GET':
@@ -32,16 +36,47 @@ def register(request):
         useremail = request.POST.get('email', None)
         username = request.POST.get('name', None)
         password = request.POST.get('password', None)
-        users = Users(
-            useremail=useremail,
-            username=username,
-            password=make_password(password)
-        )
-        users.save()
-        return render(request, 'register.html')
+        re_password = request.POST.get('re-password', None)
+        res_data={}
+        if password != re_password:
+            res_data['error']='비밀번호가 다릅니다.'
+            return render(request, 'register.html', res_data)
+        else:
+            users = Users(
+                useremail=useremail,
+                username=username,
+                password=make_password(password)
+            )
+            users.save()
+            return render(request,'login.html')
+
 
 def forgot(request):
-    return render(request, 'forgot.html')
+    if request.method == "POST":
+        useremail=request.POST.get("email")
+        try:
+            user = Users.objects.get(useremail=useremail)
+        except Users.DoesNotExist:
+            context = {'error': '없는 이메일 주소입니다.'}
+            return render(request,'forgot.html',context)
+        else:
+            request.session['email']=useremail
+            return render(request, '/usersapp/pwreset/?email="'+useremail+'"')
+    else:
+        return render(request, 'forgot.html')
 
 def pwreset(request):
-    return render(request, 'pwreset.html')
+    if request.method == "POST":
+        password=request.POST.get("password")
+        re_password=request.POST.get("re-password")
+        if password != re_password:
+            render(request,'pwreset.html',context={"error":"비밀번호가 일치하지 않습니다."})
+        else:
+            e=request.GET['email']
+            user=Users.objects.get(useremail=e)
+            user.password=password
+            user.save()
+            return render(request,"login.html")
+    else:
+        print(request.GET['email'])
+        return render(request, 'pwreset.html')
