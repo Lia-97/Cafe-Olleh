@@ -8,6 +8,12 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/my-login.css">
 </head>
 <body class="my-login-page">
+	{% if error %}
+		<script>
+			alert("{{error}}");
+			location.href="{% url 'usersapp:pwreset'%}?email="+"{{email}}";
+		</script>
+	{% endif%}
 	<section class="h-100">
 		<div class="container h-100">
 			<div class="row justify-content-md-center align-items-center h-100">

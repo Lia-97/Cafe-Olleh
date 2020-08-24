@@ -69,11 +69,11 @@ def pwreset(request):
     if request.method == "POST":
         password=request.POST.get("password")
         re_password=request.POST.get("re-password")
+        e = request.GET.get('email', "NotFound")
         if password != re_password:
-            render(request,'pwreset.html',context={"error":"비밀번호가 일치하지 않습니다."})
+            return render(request,'pwreset.html',context={"error":"비밀번호가 일치하지 않습니다.",'email':e})
         else:
-            e=request.GET.get('email',"NotFound")
-            if e == "NotFound": return render(request,'forgot.html',{'error':"변경할 이메일을 입력해 주세요."})
+            if e == "NotFound": return render(request,'/usersapp/forgot/',{'error':"변경할 이메일을 입력해 주세요."})
             user=Users.objects.get(useremail=e)
             user.password=make_password(password)
             user.save()
