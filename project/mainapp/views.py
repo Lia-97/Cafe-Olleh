@@ -15,3 +15,6 @@ def logout(request):
     if 'user' in request.session:
         del request.session['user']
         return render(request,'home.html')
+
+def best9(request):
+    return render(request,'bestmenu.html')

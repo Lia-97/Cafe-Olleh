@@ -61,7 +61,7 @@ def forgot(request):
             return render(request,'forgot.html',context)
         else:
             request.session['email']=useremail
-            return render(request, '/usersapp/pwreset/?email="'+useremail+'"')
+            return redirect('/usersapp/pwreset/?email='+useremail)
     else:
         return render(request, 'forgot.html')
 
@@ -72,11 +72,13 @@ def pwreset(request):
         if password != re_password:
             render(request,'pwreset.html',context={"error":"비밀번호가 일치하지 않습니다."})
         else:
-            e=request.GET['email']
+            e=request.GET.get('email',"NotFound")
+            if e == "NotFound": return render(request,'forgot.html',{'error':"변경할 이메일을 입력해 주세요."})
             user=Users.objects.get(useremail=e)
-            user.password=password
+            user.password=make_password(password)
             user.save()
-            return render(request,"login.html")
+            return redirect("usersapp:login")
     else:
-        print(request.GET['email'])
-        return render(request, 'pwreset.html')
+        e=request.GET.get('email',"NotFound")
+        if e == "NotFound": return render(request, 'forgot.html', {'error': "변경할 이메일을 입력해 주세요."})
+        return render(request, 'pwreset.html',{'email':request.GET['email']})
