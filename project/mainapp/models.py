@@ -31,3 +31,13 @@ class Price_Bybrand(models.Model):
     Coffeebay=models.IntegerField(null=True)
     Angelinus=models.IntegerField(null=True)
     Pascucci=models.IntegerField(null=True)
+
+class Brand(models.Model):
+    id=models.IntegerField(primary_key=True)
+    brand=models.CharField(max_length=15)
+
+class Location(models.Model):
+    id = models.IntegerField(primary_key=True)
+    brand_id=models.ForeignKey(Brand,on_delete=models.CASCADE)
+    store=models.CharField(max_length=30)
+    location=models.CharField(max_length=50)

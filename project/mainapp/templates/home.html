@@ -45,7 +45,7 @@
 					  <li class="menu-active"><a href="#home">Home</a></li>
 					  <li><a href="#event">Event</a></li>
 					  <li><a href="#best9">Best 9</a></li>
-					  <li><a href="{% url 'best9'%}">Coffee</a></li>
+					  <li><a href="{% url 'cafemap'%}">Coffee</a></li>
 					  <li><a href="#review">FAQ</a></li>
 					  {% if user_name %}
 						<li><a href="#" onclick="return false;">{{user_name}} 님!</a>
@@ -117,123 +117,21 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Americano</h4>
-								<p class="price float-right">
-									$49
+					{% for name,comment in comments.items %}
+						<div class="col-lg-4">
+							<div class="single-menu">
+								<div class="title-div justify-content-between d-flex">
+									<a href="{%url 'best9'%}?product={{name}}"><h4>{{name}}</h4></a>
+									<p class="price float-right">
+										$49
+									</p>
+								</div>
+								<p style="font-size:12px;">
+									{{comment}}
 								</p>
 							</div>
-							<p style="font-size:13px;">
-								아메리카노의 쓴맛을 즐기는 것, 어른이 됐다는 것.
-							</p>
 						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Coffee Latte</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p style="font-size:13px;">
-								라떼는 말야, 라떼를 마셨어.
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Cappuccino</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p style="font-size:12px;">
-								부드러운 거품, 고소한 시나몬, 인생은 카푸치노처럼.
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Vanilla Latte</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p>
-								당 떨어지는 오후3시, 바닐라라떼.
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Cafe Mocha</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p>
-								일상에 초콜릿 한 스푼, 카페모카.
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Caramel Macchiato</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p>
-								마끼아또, 마셔봐또?
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Cold Brew</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p>
-								시간을 마시다, 콜드브루.
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Green Tea Latte</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p style="font-size:12px;">
-								그린티라떼가 녹차라떼고, 녹차라떼가 그린티라떼야.
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="single-menu">
-							<div class="title-div justify-content-between d-flex">
-								<h4>Chocolate Latte</h4>
-								<p class="price float-right">
-									$49
-								</p>
-							</div>
-							<p>
-								어리다고 놀리지 말아요. 달달한 초콜릿라떼.
-							</p>
-						</div>
-					</div>
+					{%endfor%}
 				</div>
 			</div>
 		</section>
