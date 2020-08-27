@@ -82,7 +82,7 @@
                     <img src="/static/img/Angelinus.jpg" alt="Steak" style="width:50%">
                     <h3>{{key}}</h3>
                     <p>{{value}}</p>
-                    <a href="#" class="primary-btn text-uppercase" style="background-color:#423433; color:white;">근처 매장 보기</a>
+                    <a href="{% url 'cafemap'%}?store={{key}}" class="primary-btn text-uppercase" style="background-color:#423433; color:white;">근처 매장 보기</a>
                 </div>
             {%endfor%}
         </div>

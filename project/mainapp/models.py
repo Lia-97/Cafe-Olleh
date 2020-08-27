@@ -38,6 +38,8 @@ class Brand(models.Model):
 
 class Location(models.Model):
     id = models.IntegerField(primary_key=True)
-    brand_id=models.ForeignKey(Brand,on_delete=models.CASCADE)
+    brand=models.ForeignKey(Brand,on_delete=models.CASCADE)
     store=models.CharField(max_length=30)
     location=models.CharField(max_length=50)
+    lat=models.FloatField(null=True)
+    lng=models.FloatField(null=True)

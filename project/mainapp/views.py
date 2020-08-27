@@ -5,7 +5,27 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from mainapp.models import Product, Price_Bybrand, Product_Bybrand
+from mainapp.models import Brand,Location
 
+enToko={ "Americano":"아메리카노",
+         "Coffee Latte":"카페라떼",
+         "Cappuccino":"카푸치노",
+         "Vanilla Latte":"바닐라라떼",
+         "Cafe Mocha":"카페모카",
+         "Caramel Macchiato":"카라멜마끼아또",
+         "Cold Brew":"콜드브루",
+         "Green Tea Latte":"그린티라떼",
+         "Chocolate Latte":"초콜릿라떼",
+         "Starbucks":"스타벅스",
+         "Twosome":"투썸플레이스",
+         "TomandToms":"탐앤탐스",
+         "Ediya":"이디야",
+         "Mega":"메가커피",
+         "Hollys":"할리스",
+         "Coffeebean":"커피빈",
+         "Coffeebay":"커피베이",
+         "Angelinus":"엔제리너스",
+         "Pascucci":"파스쿠찌"}
 
 def home(request):
     context={}
@@ -33,15 +53,7 @@ def logout(request):
 def best9(request):
     context={}
     context["product"]=request.GET['product']
-    enToko={"Americano":"아메리카노",
-             "Coffee Latte":"카페라떼",
-             "Cappuccino":"카푸치노",
-             "Vanilla Latte":"바닐라라떼",
-             "Cafe Mocha":"카페모카",
-             "Caramel Macchiato":"카라멜마끼아또",
-             "Cold Brew":"콜드브루",
-             "Green Tea Latte":"그린티라떼",
-             "Chocolate Latte":"초콜릿라떼"}
+    ## global enToko
     ko_name=enToko[request.GET['product']]
     product=Product.objects.filter(products=ko_name)
     price=Price_Bybrand.objects.get(pk=product[0].id)
@@ -54,5 +66,11 @@ def best9(request):
     return render(request,'bestmenu.html',context)
 
 def cafemap(request):
-
-    return render(request,'cafemap.html')
+    context={}
+    print(request.GET['store'])
+    store=enToko[request.GET['store']]
+    print(store)
+    brand=Brand.objects.filter(brand=store)
+    location=Location.objects.filter(brand_id=brand[0].id)
+    context['Location']=location
+    return render(request,'cafemap.html',context)
