@@ -29,12 +29,6 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fb0d380e73fcc8f1b1b06a0e54692212"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-   crossorigin=""></script>
         <style>
         .body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
         .w3-bar-block .w3-bar-item {padding:20px}
@@ -72,11 +66,11 @@
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
                               <li><a href="generic.html">내 정보</a></li>
-                              <li><a href="{% url 'logout'%}">Log Out!!</a></li>
+                              <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>
                       {% else %}
-                        <li><a href="{% url 'usersapp:login' %}">Log in</a></li>
+                        <li><a href="{% url 'usersapp:login'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log in</a></li>
                       {% endif %}
 
                     </ul>
@@ -173,47 +167,6 @@
                 {% endif %}
 
             {% endfor %}
-
-
-        /*
-          var mymap;
-           if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(showPosition,showError);
-           }
-
-           function showPosition(position) {
-              var lat = position.coords.latitude;
-              var lng = position.coords.longitude;
-              mymap = L.map('map').setView([lat, lng], 15)
-                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-                    maxZoom: 18,
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                        'Imagery <a href="https://www.mapbox.com/">Mapbox</a>',
-                    id: 'mapbox.streets'
-                }).addTo(mymap);
-
-                L.marker([lat, lng]).addTo(mymap)
-                    .bindPopup("<h3 style='color:red'>현 위치</h3>").openPopup();
-           }
-           function showError(error){
-           }
-
-            {% for info in Location %}
-                var address="{{info.location}}";
-                var xhr=new XMLHttpRequest();
-                xhr.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy81EbO46BRSnX1DOgg_F84bhsdbku2z4&address="+encodeURIComponent(address), true);
-			    xhr.send();
-                xhr.onload=function(){
-                    var data=JSON.parse(xhr.responseText);
-                    if(data.status=="OK"){
-                        var lat = data.results[0].geometry.location.lat;
-                        var lng = data.results[0].geometry.location.lng;
-                    }
-                    L.marker([lat, lng]).addTo(mymap).bindPopup("<h3>{{info.store}}</h3>").openPopup();
-                }
-            {% endfor %}
-            */
           </script>
 
 

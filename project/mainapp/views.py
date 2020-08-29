@@ -48,7 +48,8 @@ def home(request):
 def logout(request):
     if 'user' in request.session:
         del request.session['user']
-        return render(request,'home.html')
+        print(request.GET['next'],"??????????")
+        return redirect(request.GET['next'])
 
 def best9(request):
     context={}
@@ -63,6 +64,10 @@ def best9(request):
         if i>=2 and coffee != None:
             coffee_list[brand]=str(coffee)+"/"+str(cost)+"원"
     context["coffee_list"]=coffee_list
+
+    if 'user' in request.session:
+        context['user_name']=request.session.get('user')
+
     return render(request,'bestmenu.html',context)
 
 def cafemap(request):
@@ -73,4 +78,7 @@ def cafemap(request):
     brand=Brand.objects.filter(brand=store)
     location=Location.objects.filter(brand_id=brand[0].id)
     context['Location']=location
+
+    if 'user' in request.session:
+        context['user_name']=request.session.get('user')
     return render(request,'cafemap.html',context)

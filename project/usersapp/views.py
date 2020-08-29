@@ -6,7 +6,8 @@ from usersapp.models import Users
 
 
 def login(request):
-    context = None
+    context = {}
+    context['next']=request.GET.get('next',None)
     if request.method == 'POST': #POST방식으로 요청받으면, useremail에는 POST방식으로 받아온 input name이 email인 value값을 가져오고,
         # 그 값이 없으면 오류가 아니라 None으로 처리한다.(하지만 input 방식이 required이기 때문에 입력 받은 값이 없을 수는 없다.)
         useremail = request.POST.get('email', None)
@@ -25,7 +26,7 @@ def login(request):
                 #입력한 비밀번호와 db에 등록된 user.password를 비교해서 같다면,
                 request.session['user'] = user_name
                 #session에 user키의 value를 위에서 정의한 user_name으로 저장한다.
-                return redirect('/mainapp/home/')
+                return redirect(request.GET['next'])
             #로그인에 성공했으면 /mainapp/home/으로 redirect
             else:
                 context = {'error': '아이디 또는 비밀번호가 일치하지 않습니다.'}

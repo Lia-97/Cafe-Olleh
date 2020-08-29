@@ -51,11 +51,11 @@
 						<li><a href="#" onclick="return false;">{{user_name}} 님!</a>
 							<ul>
 							  <li><a href="generic.html">내 정보</a></li>
-							  <li><a href="{% url 'logout'%}">Log Out!!</a></li>
+							  <li><a href="{% url 'logout'%}?next={{request.get_full_path}}">Log Out!!</a></li>
 							</ul>
 						</li>
 					  {% else %}
-						<li><a href="{% url 'usersapp:login' %}">Log in</a></li>
+						<li><a href="{% url 'usersapp:login'%}?next={{request.get_full_path}}">Log in</a></li>
 					  {% endif %}
 
 					</ul>
