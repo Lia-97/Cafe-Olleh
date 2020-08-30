@@ -85,7 +85,7 @@ def cafemap(request):
 
 def brandmenu(request):
     context={}
-    menu_list=["Starbucks","Twosome","TomandToms","Ediya","MegaCoffee","Hollys",
+    menu_list=["Starbucks","TwosomePlace","TomnToms","Ediya","MegaCoffee","Hollys",
                "Coffeebean","Coffeebay","Angelinus","Pascucci"]
     context['menu_list']=menu_list
 
