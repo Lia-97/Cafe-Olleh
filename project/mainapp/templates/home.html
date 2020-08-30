@@ -45,7 +45,7 @@
 					  <li class="menu-active"><a href="#home">Home</a></li>
 					  <li><a href="#event">Event</a></li>
 					  <li><a href="#best9">Best 9</a></li>
-					  <li><a href="{% url 'cafemap'%}">Coffee</a></li>
+					  <li><a href="{% url 'brandmenu'%}">Menu</a></li>
 					  <li><a href="#review">FAQ</a></li>
 					  {% if user_name %}
 						<li><a href="#" onclick="return false;">{{user_name}} 님!</a>
@@ -75,7 +75,23 @@
 							Start your day with <br>
 							a black Coffee
 						</h1>
-						<a href="#" class="primary-btn text-uppercase">Buy Now</a>
+
+						<ul class="nav-menu">
+							<li><a href="#" class="primary-btn text-uppercase" style="font-size:1em;color:#bca78e;" onclick="return false;">Go Brand!</a>
+								<ul>
+								  <li><a href="#">> StarBucks</a></li>
+								  <li><a href="#">> TwosomePlace</a></li>
+								  <li><a href="#">> TomandToms</a></li>
+								  <li><a href="#">> Ediya</a></li>
+								  <li><a href="#">> Mega Coffee</a></li>
+								  <li><a href="#">> Hollys</a></li>
+								  <li><a href="#">> CoffeeBean</a></li>
+								  <li><a href="#">> CoffeeBay</a></li>
+								  <li><a href="#">> Angelinus</a></li>
+								  <li><a href="#">> Pascucci</a></li>
+								</ul>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>

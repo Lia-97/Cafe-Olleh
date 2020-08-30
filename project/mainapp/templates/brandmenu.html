@@ -28,7 +28,11 @@
         <link rel="stylesheet" href="/static/css/main.css">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fb0d380e73fcc8f1b1b06a0e54692212"></script>
+        <!--W3C CSS-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <style>
         .body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
         .w3-bar-block .w3-bar-item {padding:20px}
@@ -37,21 +41,28 @@
           background : url(/static/coffeeapp/parallax-simple.jpg) center;
           background-size : cover;
         }
-        #map{
-                height:600px;
-                width:100%;
-                margin-top:150px;
+
+
+
+        ul.nav-pills {
+            top: 20px;
+            position: fixed;
         }
-        .label {margin-bottom: 96px;}
-        .label * {display: inline-block;vertical-align: top;}
-        .label .left {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
-        .label .center {background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png) repeat-x;display: inline-block;height: 24px;font-size: 12px;line-height: 24px;}
-        .label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
+
+        ul.nav-tabs {
+            top: 20px;
+            position: fixed;
+        }
+
+        #brand_menu{
+            position: relative;
+        }
+
         </style>
 </head>
 
-<body>
-          <header id="header" id="home" style="background-color:#423433;">
+<body id="brand_menu" data-spy="scroll" data-target="#myScrollspy" data-offset="1">
+          <header id="header" id="home" style="background-color:#423433; ">
             <div class="container">
                 <div class="row align-items-center justify-content-between d-flex">
                   <div id="logo">
@@ -62,20 +73,20 @@
                   </div>
                   <nav id="nav-menu-container">
                     <ul class="nav-menu">
-                      <li class="menu-active" style="font-family: 'Poppins', sans-serif;"><a href="#home">Home</a></li>
-                      <li><a href="#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
-                      <li><a href="#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
-                      <li><a href="#coffee" style="font-family: 'Poppins', sans-serif;">Coffee</a></li>
-                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">FAQ</a></li>
+                      <li class="menu-active" style="font-family: 'Poppins', sans-serif;"><a href="#home" style="color:white; text-decoration:none;">Home</a></li>
+                      <li><a href="#event" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Event</a></li>
+                      <li><a href="#best9" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Best 9</a></li>
+                      <li><a href="#coffee" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Coffee</a></li>
+                      <li><a href="#review" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">FAQ</a></li>
                       {% if user_name %}
-                        <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
+                        <li><a href="#" onclick="return false;" style="color:white; text-decoration:none;">{{user_name}} 님!</a>
                             <ul>
-                              <li><a href="generic.html">내 정보</a></li>
+                              <li><a href="generic.html" style="font-family: 'Poppins', sans-serif;">내 정보</a></li>
                               <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>
                       {% else %}
-                        <li><a href="{% url 'usersapp:login'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log in</a></li>
+                        <li><a href="{% url 'usersapp:login'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Log in</a></li>
                       {% endif %}
 
                     </ul>
@@ -84,104 +95,36 @@
             </div>
           </header><!-- #header -->
 
-
-          <div id="map"></div>
-          <script>
-              var container=document.getElementById('map');
-              var options = {
-                center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3
-                };
-              var map = new kakao.maps.Map(container, options);
-
-          if (navigator.geolocation) {
-
-                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-                navigator.geolocation.getCurrentPosition(function(position) {
-
-                    var lat = position.coords.latitude; // 위도
-                    var lon = position.coords.longitude; // 경도
-
-                    var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                    var message = '<div class ="label"><span class="left"></span><span class="center">현 위치!!</span><span class="right"></span></div>'; // 인포윈도우에 표시될 내용입니다
-
-                    // 마커와 인포윈도우를 표시합니다
-                    displayMarker(locPosition, message);
-
-                  });
-          }
-
-            // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-            function displayMarker(locPosition, message) {
-
-                // 마커를 생성합니다
-                var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: locPosition
-                });
-
-                var customOverlay=new kakao.maps.CustomOverlay({
-                    map:map,
-                    position:locPosition,
-                    content:message,
-
-                });
-
-
-                /*
-                var iwContent = message; // 인포윈도우에 표시할 내용
-
-                // 인포윈도우를 생성합니다
-                var infowindow = new kakao.maps.InfoWindow({
-                    content : iwContent
-                });
-
-                // 인포윈도우를 마커위에 표시합니다
-                infowindow.open(map, marker);
-                */
-
-                // 지도 중심좌표를 접속위치로 변경합니다
-                map.setCenter(locPosition);
-            }
-            var marker=new Array();
-            var infowindow=new Array();
-            {% for info in Location %}
-                {% if info.lat %}
-                    // 마커를 표시할 위치입니다
-                    var position =  new kakao.maps.LatLng({{info.lat}}, {{info.lng}});
-
-                    // 마커를 생성합니다
-                    marker[{{forloop.counter0}}] = new kakao.maps.Marker({
-                      position: position
-                    });
-
-                    // 마커를 지도에 표시합니다.
-                    marker[{{forloop.counter0}}].setMap(map);
-
-                    // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-                    var iwContent = '<b>{{info.store}}'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-                    // 인포윈도우를 생성합니다
-                    infowindow[{{forloop.counter0}}] = new kakao.maps.InfoWindow({
-                        content : iwContent
-                    });
-
-                    // 마커에 마우스오버 이벤트를 등록합니다
-                    kakao.maps.event.addListener(marker[{{forloop.counter0}}], 'mouseover', function() {
-                      // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-                        infowindow[{{forloop.counter0}}].open(map, marker[{{forloop.counter0}}]);
-                    });
-
-                    // 마커에 마우스아웃 이벤트를 등록합니다
-                    kakao.maps.event.addListener(marker[{{forloop.counter0}}], 'mouseout', function() {
-                        // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-                        infowindow[{{forloop.counter0}}].close();
-                    });
-                {% endif %}
-
-            {% endfor %}
-          </script>
-
+      <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px" >
+        <h2>Brand Menu</h2><hr style="border:1px solid black;"><!--{{아메리카노}}-->
+        <!-- First Photo Grid-->
+        <div>
+            <div class="container-fluid">
+              <div class="row">
+                <nav class="col-sm-3 col-4" id="myScrollspy" >
+                  <ul class="nav nav-pills flex-column" style="margin-top:150px;">
+                    {% for brand in menu_list%}
+                      <li class="nav-item">
+                        <a class="nav-link" href="#{{brand}}">{{brand}}</a>
+                      </li>
+                    {% endfor%}
+                  </ul>
+                </nav>
+                <div class="col-sm-9 col-8">
+                    {% for brand in menu_list%}
+                        <div id="{{brand}}" class="w3-main w3-content w3-padding" style="max-width:1200px; margin-top:25px">
+                          <h2  style="margin-top:100px">{{brand}}</h2><hr style="border:1px solid black;"><!--{{아메리카노}}-->
+                          <div  class="bg-warning" style="margin-top:50px; margin-bottom:50px;" >
+                                <h1>Section 2</h1>
+                                <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+                          </div>
+                        </div>
+                    {% endfor %}
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
 
         <!-- start footer Area -->
         <footer class="footer-area section-gap">
@@ -237,6 +180,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <script src="/static/js/vendor/jquery-2.2.4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="/static/js/vendor/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
         <script src="/static/js/easing.min.js"></script>
         <script src="/static/js/hoverIntent.js"></script>
         <script src="/static/js/superfish.min.js"></script>

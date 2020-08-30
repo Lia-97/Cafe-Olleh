@@ -82,3 +82,14 @@ def cafemap(request):
     if 'user' in request.session:
         context['user_name']=request.session.get('user')
     return render(request,'cafemap.html',context)
+
+def brandmenu(request):
+    context={}
+    menu_list=["Starbucks","Twosome","TomandToms","Ediya","MegaCoffee","Hollys",
+               "Coffeebean","Coffeebay","Angelinus","Pascucci"]
+    context['menu_list']=menu_list
+
+    if 'user' in request.session:
+        context['user_name']=request.session.get('user')
+
+    return render(request,'brandmenu.html',context)
