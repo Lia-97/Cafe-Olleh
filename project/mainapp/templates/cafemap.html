@@ -43,13 +43,13 @@
                 margin-top:150px;
         }
 
-        .customoverlay {position:relative;bottom:95px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
+        .customoverlay {position:relative;bottom:50px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
         .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
         .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
         .customoverlay .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;}
         .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 
-        .label {position:relative;bottom:65px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
+        .label {position:relative;bottom:55px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
         .label:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
         .label a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
         .label .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:12px;font-weight:bold;}
@@ -104,7 +104,7 @@
 
               var imageSrc = '/static/img/currentlocation.png'; // 마커이미지의 주소입니다
               var imageSize = new kakao.maps.Size(45, 45); // 마커이미지의 크기입니다
-              //var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+              var imageOption = {offset: new kakao.maps.Point(23, 44)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
               if (navigator.geolocation) {
 
@@ -116,7 +116,7 @@
 
                         var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
                         var message = '<div class ="customoverlay"><a href="#"><span class="title">현 위치!!</span></a></div>'; // 인포윈도우에 표시될 내용입니다
-                        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+                        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize,imageOption);
 
                         // 마커와 인포윈도우를 표시합니다
                         displayMarker(locPosition, message,markerImage);
@@ -137,7 +137,8 @@
                 var customOverlay=new kakao.maps.CustomOverlay({
                     map:map,
                     position:locPosition,
-                    content:message
+                    content:message,
+                    yAnchor:1
                 });
 
                 // 지도 중심좌표를 접속위치로 변경합니다
@@ -146,7 +147,14 @@
 
             var marker=new Array();
             var customoverlay=new Array();
-
+            var ComarkerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';
+            var CoimageSize = new kakao.maps.Size(22, 26),
+            CoimageOptions = {
+                spriteOrigin: new kakao.maps.Point(10, 0),
+                spriteSize: new kakao.maps.Size(36, 98),
+                offset: new kakao.maps.Point(11, 25)
+            };
+            var ComarkerImage = new kakao.maps.MarkerImage(ComarkerImageSrc, CoimageSize, CoimageOptions)
             {% for info in Location %}
                 {% if info.lat %}
                     // 마커를 표시할 위치입니다
@@ -156,6 +164,7 @@
                     marker[{{forloop.counter0}}] = new kakao.maps.Marker({
                       map:map,
                       position: position,
+                      image:ComarkerImage
                     });
 
 
