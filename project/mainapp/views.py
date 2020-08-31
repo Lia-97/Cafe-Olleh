@@ -85,11 +85,7 @@ def cafemap(request):
 def brandmenu(request):
     context={}
     menu_list=["Starbucks","TwosomePlace","TomnToms","Ediya","MegaCoffee","Hollys",
-<<<<<<< HEAD
-               "Coffeebean","Coffeebay","Angelinus","Pascucci"]
-=======
                "CoffeeBean","CoffeeBay","Angelinus","Pascucci"]
->>>>>>> 6ed964b5e6b576ca966da3a0c36307cf22b519a8
     context['menu_list']=menu_list
 
     if 'user' in request.session:
