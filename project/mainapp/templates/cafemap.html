@@ -42,11 +42,19 @@
                 width:100%;
                 margin-top:150px;
         }
-        .label {margin-bottom: 96px;}
-        .label * {display: inline-block;vertical-align: top;}
-        .label .left {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
-        .label .center {background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png) repeat-x;display: inline-block;height: 24px;font-size: 12px;line-height: 24px;}
-        .label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
+
+        .customoverlay {position:relative;bottom:95px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
+        .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+        .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
+        .customoverlay .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;}
+        .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+
+        .label {position:relative;bottom:65px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
+        .label:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+        .label a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
+        .label .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:12px;font-weight:bold;}
+        .label .location {display:block;text-align:center;color:#b3b3b3;background:#fff;padding:7px 15px;font-size:6px;}
+        .label:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
         </style>
 </head>
 
@@ -94,57 +102,51 @@
                 };
               var map = new kakao.maps.Map(container, options);
 
-          if (navigator.geolocation) {
+              var imageSrc = '/static/img/currentlocation.png'; // 마커이미지의 주소입니다
+              var imageSize = new kakao.maps.Size(45, 45); // 마커이미지의 크기입니다
+              //var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-                navigator.geolocation.getCurrentPosition(function(position) {
+              if (navigator.geolocation) {
 
-                    var lat = position.coords.latitude; // 위도
-                    var lon = position.coords.longitude; // 경도
+                    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                    navigator.geolocation.getCurrentPosition(function(position) {
 
-                    var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                    var message = '<div class ="label"><span class="left"></span><span class="center">현 위치!!</span><span class="right"></span></div>'; // 인포윈도우에 표시될 내용입니다
+                        var lat = position.coords.latitude; // 위도
+                        var lon = position.coords.longitude; // 경도
 
-                    // 마커와 인포윈도우를 표시합니다
-                    displayMarker(locPosition, message);
+                        var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                        var message = '<div class ="customoverlay"><a href="#"><span class="title">현 위치!!</span></a></div>'; // 인포윈도우에 표시될 내용입니다
+                        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
-                  });
-          }
+                        // 마커와 인포윈도우를 표시합니다
+                        displayMarker(locPosition, message,markerImage);
+
+                      });
+              }
 
             // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-            function displayMarker(locPosition, message) {
+            function displayMarker(locPosition, message,markerImage) {
 
                 // 마커를 생성합니다
                 var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: locPosition
+                    position: locPosition,
+                    image:markerImage
                 });
+                marker.setMap(map);
 
                 var customOverlay=new kakao.maps.CustomOverlay({
                     map:map,
                     position:locPosition,
-                    content:message,
-
+                    content:message
                 });
-
-
-                /*
-                var iwContent = message; // 인포윈도우에 표시할 내용
-
-                // 인포윈도우를 생성합니다
-                var infowindow = new kakao.maps.InfoWindow({
-                    content : iwContent
-                });
-
-                // 인포윈도우를 마커위에 표시합니다
-                infowindow.open(map, marker);
-                */
 
                 // 지도 중심좌표를 접속위치로 변경합니다
                 map.setCenter(locPosition);
             }
+
             var marker=new Array();
-            var infowindow=new Array();
+            var customoverlay=new Array();
+
             {% for info in Location %}
                 {% if info.lat %}
                     // 마커를 표시할 위치입니다
@@ -152,30 +154,28 @@
 
                     // 마커를 생성합니다
                     marker[{{forloop.counter0}}] = new kakao.maps.Marker({
-                      position: position
+                      map:map,
+                      position: position,
                     });
 
-                    // 마커를 지도에 표시합니다.
-                    marker[{{forloop.counter0}}].setMap(map);
-
-                    // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-                    var iwContent = '<b>{{info.store}}'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-                    // 인포윈도우를 생성합니다
-                    infowindow[{{forloop.counter0}}] = new kakao.maps.InfoWindow({
-                        content : iwContent
-                    });
 
                     // 마커에 마우스오버 이벤트를 등록합니다
                     kakao.maps.event.addListener(marker[{{forloop.counter0}}], 'mouseover', function() {
+                      // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
+                      var customcontent = '<div class ="label"><a href="#"><span class="title">{{info.store}}</span></a></div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
                       // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-                        infowindow[{{forloop.counter0}}].open(map, marker[{{forloop.counter0}}]);
+                        customoverlay[{{forloop.counter0}}]=new kakao.maps.CustomOverlay({
+                            map:map,
+                            position:marker[{{forloop.counter0}}].getPosition(),
+                            content:customcontent
+                        });
                     });
 
                     // 마커에 마우스아웃 이벤트를 등록합니다
                     kakao.maps.event.addListener(marker[{{forloop.counter0}}], 'mouseout', function() {
                         // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-                        infowindow[{{forloop.counter0}}].close();
+                        customoverlay[{{forloop.counter0}}].setMap(null);
                     });
                 {% endif %}
 

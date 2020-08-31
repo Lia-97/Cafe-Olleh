@@ -48,7 +48,6 @@ def home(request):
 def logout(request):
     if 'user' in request.session:
         del request.session['user']
-        print(request.GET['next'],"??????????")
         return redirect(request.GET['next'])
 
 def best9(request):
@@ -85,8 +84,8 @@ def cafemap(request):
 
 def brandmenu(request):
     context={}
-    menu_list=["Starbucks","Twosome","TomandToms","Ediya","MegaCoffee","Hollys",
-               "Coffeebean","Coffeebay","Angelinus","Pascucci"]
+    menu_list=["Starbucks","TwosomePlace","TomnToms","Ediya","MegaCoffee","Hollys",
+               "CoffeeBean","CoffeeBay","Angelinus","Pascucci"]
     context['menu_list']=menu_list
 
     if 'user' in request.session:
