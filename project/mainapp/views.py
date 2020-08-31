@@ -71,9 +71,9 @@ def best9(request):
 
 def cafemap(request):
     context={}
-    print(request.GET['store'])
+    # 영문 이름 받기
+    context['store']=request.GET['store']
     store=enToko[request.GET['store']]
-    print(store)
     brand=Brand.objects.filter(brand=store)
     location=Location.objects.filter(brand_id=brand[0].id)
     context['Location']=location

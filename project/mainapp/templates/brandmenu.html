@@ -73,9 +73,9 @@
                   </div>
                   <nav id="nav-menu-container">
                     <ul class="nav-menu">
-                      <li class="menu-active" style="font-family: 'Poppins', sans-serif;"><a href="#home" style="color:white; text-decoration:none;">Home</a></li>
-                      <li><a href="#event" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Event</a></li>
-                      <li><a href="#best9" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Best 9</a></li>
+                      <li class="menu-active" style="font-family: 'Poppins', sans-serif;"><a href="{% url 'home' %}" style="color:white; text-decoration:none;">Home</a></li>
+                      <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Event</a></li>
+                      <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Best 9</a></li>
                       <li><a href="{% url 'brandmenu' %}" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">Menu</a></li>
                       <li><a href="#review" style="font-family: 'Poppins', sans-serif; color:white; text-decoration:none;">FAQ</a></li>
                       {% if user_name %}
