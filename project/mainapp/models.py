@@ -1,4 +1,5 @@
 from django.db import models
+from usersapp.models import Users
 
 # Create your models here
 
@@ -43,3 +44,30 @@ class Location(models.Model):
     location=models.CharField(max_length=50)
     lat=models.FloatField(null=True)
     lng=models.FloatField(null=True)
+
+class Post(models.Model):
+    writer=models.ForeignKey(Users,on_delete=models.CASCADE)
+    title=models.TextField()
+    content=models.TextField()
+    writedate=models.DateTimeField(auto_now_add=True)
+    cnt=models.IntegerField(default=0)
+    like=models.IntegerField(default=0)
+
+    @property
+    def update_counter(self):
+        self.cnt+=1
+        self.save()
+
+    @property
+    def up_like(self):
+        self.like+=1
+        self.save()
+
+    @property
+    def down_like(self):
+        self.like-=1
+        self.save()
+
+class recommend(models.Model):
+    useremail=models.ForeignKey(Users,on_delete=models.CASCADE)
+    post=models.ForeignKey(Post,on_delete=models.CASCADE)

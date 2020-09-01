@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from mainapp.models import Product, Price_Bybrand, Product_Bybrand
 from mainapp.models import Brand,Location
+from mainapp.models import Post,recommend
+from usersapp.models import Users
 
 enToko={ "Americano":"아메리카노",
          "Coffee Latte":"카페라떼",
@@ -47,6 +49,7 @@ def home(request):
 
 def logout(request):
     if 'user' in request.session:
+        del request.session['email']
         del request.session['user']
         return redirect(request.GET['next'])
 
@@ -90,5 +93,81 @@ def brandmenu(request):
 
     if 'user' in request.session:
         context['user_name']=request.session.get('user')
-
     return render(request,'brandmenu.html',context)
+
+def post(request):
+    context={}
+
+    if 'user' in request.session:
+        context['user_name']=request.session.get('user')
+
+    context["error"]=request.GET.get('err',None)
+    if request.method == "POST":
+        title=request.POST['title']
+        content=request.POST['content']
+        if 'user' in request.session:
+            writer=request.session['email']
+            post=Post(writer_id=writer,title=title,content=content)
+            post.save()
+            return redirect('post')
+        else:
+            return redirect('/mainapp/post/?err='+"먼저 로그인을 해주세요.")
+    else:
+        post=Post.objects.all()
+        context["Post"]=post
+        return render(request,'post.html',context)
+
+def write(request):
+    context={}
+    if 'user' in request.session:
+        context['user_name']=request.session.get('user')
+        return render(request,'write.html',context)
+    else:
+        return redirect("/mainapp/post/?err="+"먼저 로그인을 해주세요.")
+
+def view(request):
+    context={}
+    id = request.GET['view']
+    context["error"]=request.GET.get("err",None)
+    if 'user' in request.session:
+        context['user_name']=request.session.get('user')
+        context['user_email']=request.session.get('email')
+        try:
+            like=recommend.objects.filter(useremail_id=request.session.get('email'))
+        except recommend.DoesNotExist:
+            pass
+        else:
+            print(list(map(lambda x:x.post_id,like)),id)
+            if int(id) in list(map(lambda x:x.post_id,like)):
+                print("참참참참참참")
+                context['islike']=True
+            else:
+                print("거짓거짓")
+                context['islike']=False
+
+    view=Post.objects.get(pk=id)
+    context['view']=view
+    return render(request,'view.html',context)
+
+def notlike(request):
+    post_id=request.GET['post_id']
+    user_id=request.GET['user_id']
+
+    if 'user' not in request.session:
+        return redirect("/mainapp/view/?view="+str(post_id)+"&err=먼저 로그인을 해주세요.")
+
+
+    view = Post.objects.get(pk=post_id)
+    view.up_like
+    recom=recommend(post_id=post_id,useremail_id=user_id)
+    recom.save()
+    return redirect('/mainapp/view/?view='+str(post_id))
+
+def islike(request):
+    post_id = request.GET['post_id']
+    user_id = request.GET['user_id']
+    view=Post.objects.get(pk=post_id)
+    view.down_like
+    recom=recommend.objects.filter(post_id=post_id,useremail_id=user_id)
+    recom.delete()
+    return redirect('/mainapp/view/?view='+str(post_id))
