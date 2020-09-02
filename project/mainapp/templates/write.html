@@ -58,11 +58,11 @@
                         <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
                         <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
                         <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
-                        <li><a href="#review" style="font-family: 'Poppins', sans-serif;">FAQ</a></li>
+                        <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
                         {% if user_name %}
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
-                                <li><a href="generic.html">내 정보</a></li>
+                                <li><a href="{% url 'mypage' %}">내 정보</a></li>
                                 <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>
@@ -101,11 +101,19 @@
         <button id="sub_btn" type="submit" class="btn btn-secondary">제출</button>
         <button type='reset' class='btn btn-secondary'>재작성</button>
         <script>
-          if("{{news}}"){
+          if("{{view}}"){
             document.write("<a href='javascript:history.back(-1)'><button type='button' class='btn btn-secondary'>취소</button></a>")
+            $('h2').val("건의 사항(수정)");
+            //띄어쓰기 여러개를 표현
+            $('#title').val("{{view.title|escapejs}}");
+            //개행처리는 <br>로 대체
+            var str="{{view.content|linebreaksbr}}"
+            str=str.replace(/<br>/g,"\n");
+            $('#content').html(str);
+            $('#sub_btn').html("수정 완료");
+            $('#write_form').attr("action","{% url 'update'%}?id="+{{view.id}});
           }
         </script>
-
       </form>
     </div>
     <!-- end Write area-->

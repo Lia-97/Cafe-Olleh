@@ -55,11 +55,11 @@
                       <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
                       <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
                       <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
-                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">FAQ</a></li>
+                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
                       {% if user_name %}
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
-                              <li><a href="generic.html" style="font-family: 'Poppins', sans-serif;">내 정보</a></li>
+                              <li><a href="{% url 'mypage' %}" style="font-family: 'Poppins', sans-serif;">내 정보</a></li>
                               <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>

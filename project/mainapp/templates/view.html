@@ -64,11 +64,11 @@
                         <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
                         <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
                         <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
-                        <li><a href="#review" style="font-family: 'Poppins', sans-serif;">FAQ</a></li>
+                        <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
                         {% if user_name %}
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
-                                <li><a href="generic.html">내 정보</a></li>
+                                <li><a href="{% url 'mypage' %}">내 정보</a></li>
                                 <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>
@@ -82,7 +82,7 @@
     </header><!-- #header -->
 
     <!-- Start View area -->
-    {{view.update_counter}}
+
     <div style="width:850px; margin-bottom:150px; margin-top:150px;">
       <div class="media border p-3" style="margin:50px; width:800px;">
           <img src="/static/img/media.png" alt="Rabius" class="mr-3 mt-3 rounded-circle" style="width:60px;">
@@ -91,14 +91,21 @@
             <pre>{{view.content}}</pre>
           </div>
       </div>
-        <a href="{% url 'post'%}">
-        <button id="gopost" style="float:right; background-color:#b68834; color:white; opacity:0.8;" class="btn">목록으로</button>
-        </a>
-        {% if islike %}
-            <button id="islike" onclick="islike({{view.id}})" style="float:right; position:relative; bottom:20px; margin-right:10px; background-color:white; color:red; font-size:2.5em; font-weight:bold; opacity:0.8;"  class="btn">♥</button>
+        {% if update%}
+            <button id="update" onclick="update({{view.id}})" style="float:right; background-color:#b68834; color:white; opacity:0.8;" class="btn">수정</button>
+            <button id="remove" onclick="remove({{view.id}})"  style="float:right; margin-right:10px; background-color:#b68834; color:white; opacity:0.8;"  class="btn">삭제</button>
         {% else %}
-            <button id="notlike" onclick="notlike({{view.id}})" style="float:right; position:relative; bottom:20px; margin-right:10px; background-color:white; color:red; font-size:2.5em; font-weight:bold; opacity:0.8;"  class="btn">♡</button>
+            <a href="{% url 'post'%}">
+            <button id="gopost" style="float:right; background-color:#b68834; color:white; opacity:0.8;" class="btn">목록으로</button>
+            </a>
+            {% if islike %}
+                <button id="islike" onclick="islike({{view.id}})" style="float:right; position:relative; bottom:20px; margin-right:10px; background-color:white; color:red; font-size:2.5em; font-weight:bold; opacity:0.8;"  class="btn">♥</button>
+            {% else %}
+                <button id="notlike" onclick="notlike({{view.id}})" style="float:right; position:relative; bottom:20px; margin-right:10px; background-color:white; color:red; font-size:2.5em; font-weight:bold; opacity:0.8;"  class="btn">♡</button>
+            {% endif %}
         {% endif %}
+
+
     </div>
 
     <!-- end View area-->
@@ -163,6 +170,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
         function notlike(id){
             location.href="{% url 'notlike'%}?user_id={{user_email}}&post_id="+id;
+        }
+
+        function update(id){
+            location.href="{% url 'write'%}?id="+id;
+        }
+        function remove(id){
+            location.href="{% url 'remove'%}?id="+id;
         }
 
 

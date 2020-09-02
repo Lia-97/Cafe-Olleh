@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from mainapp.models import Product, Price_Bybrand, Product_Bybrand
 from mainapp.models import Brand,Location
 from mainapp.models import Post,recommend
+from django.core.paginator import Paginator
 from usersapp.models import Users
 
 enToko={ "Americano":"아메리카노",
@@ -29,6 +30,13 @@ enToko={ "Americano":"아메리카노",
          "Angelinus":"엔제리너스",
          "Pascucci":"파스쿠찌"}
 
+adv={"Ediyaevent":'https://www.ediya.com/contents/event.html?tb_name=event&bbs_section=view&Ctg=&page=1&idx=122',
+     "Pascuccievent":"http://www.caffe-pascucci.co.kr/event/eventView.asp?teSeq=431",
+     "Angelinusevent":"http://www.angelinus.com/Event/Event_View.asp?Mode=VIEW&EventType=Event&Idx=626&SearchEventGubun=0"
+     }
+
+
+
 def home(request):
     context={}
     comments={"Americano":"아메리카노의 쓴맛을 즐기는 것, 어른이 됐다는 것.",
@@ -40,6 +48,8 @@ def home(request):
              "Cold Brew":"시간을 마시다, 콜드브루.",
              "Green Tea Latte":"그린티라떼가 녹차라떼고, 녹차라떼가 그린티라떼야.",
              "Chocolate Latte":"어리다고 놀리지 말아요. 달달한 초콜릿라떼."}
+
+    context["adv"]=adv
     context["comments"]=comments
     if 'user' in request.session:
         context['user_name']=request.session.get('user')
@@ -97,11 +107,12 @@ def brandmenu(request):
 
 def post(request):
     context={}
-
     if 'user' in request.session:
         context['user_name']=request.session.get('user')
+    if 'error' in request.session:
+        context['error']=request.session.get('error')
+        del request.session['error']
 
-    context["error"]=request.GET.get('err',None)
     if request.method == "POST":
         title=request.POST['title']
         content=request.POST['content']
@@ -113,22 +124,51 @@ def post(request):
         else:
             return redirect('/mainapp/post/?err='+"먼저 로그인을 해주세요.")
     else:
+        page = int(request.GET.get('page', 1))
         post=Post.objects.all()
-        context["Post"]=post
+        post=post.order_by('-writedate')
+        paginator = Paginator(post, 5)
+        pagelist = paginator.get_page(page)
+        position = page - 1
+        # visible_page: Pagination에 보여질 개수
+        visible_page = 3
+        R = position // visible_page
+        visible_list = []
+        for i in range((R * visible_page) + 1, ((R + 1) * visible_page) + 1):
+            if i > paginator.num_pages: break
+            visible_list.append(i)
+
+        context["Post"]=pagelist
+        context['total']=visible_list
+        context['current']=page
         return render(request,'post.html',context)
 
 def write(request):
     context={}
-    if 'user' in request.session:
-        context['user_name']=request.session.get('user')
+    id=request.GET.get('id',None)
+
+    if id:
+        view=Post.objects.get(id=id)
+        context["view"]=view
         return render(request,'write.html',context)
     else:
-        return redirect("/mainapp/post/?err="+"먼저 로그인을 해주세요.")
+        if 'user' in request.session:
+            context['user_name']=request.session.get('user')
+            return render(request,'write.html',context)
+        else:
+            request.session['error']="먼저 로그인을 해주세요."
+            return redirect("/mainapp/post/")
 
 def view(request):
     context={}
     id = request.GET['view']
-    context["error"]=request.GET.get("err",None)
+
+    context['update']=request.GET.get('update',None)
+
+    if 'error' in request.session:
+        context['error'] = request.session.get('error')
+        del request.session['error']
+
     if 'user' in request.session:
         context['user_name']=request.session.get('user')
         context['user_email']=request.session.get('email')
@@ -137,12 +177,9 @@ def view(request):
         except recommend.DoesNotExist:
             pass
         else:
-            print(list(map(lambda x:x.post_id,like)),id)
             if int(id) in list(map(lambda x:x.post_id,like)):
-                print("참참참참참참")
                 context['islike']=True
             else:
-                print("거짓거짓")
                 context['islike']=False
 
     view=Post.objects.get(pk=id)
@@ -154,7 +191,8 @@ def notlike(request):
     user_id=request.GET['user_id']
 
     if 'user' not in request.session:
-        return redirect("/mainapp/view/?view="+str(post_id)+"&err=먼저 로그인을 해주세요.")
+        request.session['error']="먼저 로그인을 해주세요."
+        return redirect("/mainapp/view/?view="+str(post_id))
 
 
     view = Post.objects.get(pk=post_id)
@@ -171,3 +209,44 @@ def islike(request):
     recom=recommend.objects.filter(post_id=post_id,useremail_id=user_id)
     recom.delete()
     return redirect('/mainapp/view/?view='+str(post_id))
+
+def update_cnt(request):
+    post_id=request.GET['id']
+    loc=request.GET['loc']
+    view=Post.objects.get(pk=post_id)
+    view.update_counter
+    return redirect(loc)
+
+def mypage(request):
+    context={}
+
+    if 'user' in request.session:
+        context['user_name']=request.session['user']
+        context['user_email']=request.session['email']
+        email=request.session['email']
+        user_post = Post.objects.filter(writer_id=email)
+        context['Post']=user_post
+
+    return render(request,'mypage.html',context)
+
+def userpost(request):
+    email=request.GET['email']
+    user_post=Post.objects.filter(writer_id=email)
+    jsonContent={"Post":user_post}
+    return JsonResponse(jsonContent,json_dumps_params={'ensure_ascii':False})
+
+def remove(request):
+    id=request.GET['id']
+    view=Post.objects.get(id=id)
+    view.delete()
+    return redirect("/mainapp/mypage/")
+
+def update(request):
+    id=request.GET.get('id')
+    view=Post.objects.get(id=id)
+    view.title=request.POST['title']
+    view.content=request.POST['content']
+    view.save()
+    return redirect("/mainapp/mypage/")
+
+

@@ -65,11 +65,11 @@
                       <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
                       <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
                       <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
-                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">FAQ</a></li>
+                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
                       {% if user_name %}
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
-                              <li><a href="generic.html">내 정보</a></li>
+                              <li><a href="{% url 'mypage' %}">내 정보</a></li>
                               <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>
@@ -117,6 +117,24 @@
         </table>
     </div>
     <!-- end Post area-->
+
+    <!-- Start Pagination-->
+        <ul class="pagination justify-content-center">
+            {% if Post.has_previous %}
+              <li class="page-item"><a class="page-link" href='?page={{Post.number|add:-1}}'>Previous</a></li>
+            {% endif %}
+            {% for i in total%}
+              {% if i == current %}
+                <li class="page-item active"  ><a class="page-link" style="background-color:#b68834; border-color:#b68834;" href="?page={{i}}">{{i}}</a></li>
+              {% else %}
+                <li class="page-item"><a class="page-link" style="color:black;"  href="?page={{i}}">{{i}}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if Post.has_next %}
+              <li class="page-item"><a class="page-link"  href='?page={{Post.number|add:+1}}'>Next</a></li>
+            {% endif%}
+        </ul>
+    <!-- End Pagination-->
 
 
         <!-- start footer Area -->
@@ -177,7 +195,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         });
 
         function view(id){
-            location.href="{% url 'view'%}?view="+id;
+            location.href="{% url 'update_cnt'%}?id="+id+"&loc={% url 'view'%}?view="+id;
+            //location.href="{% url 'view'%}?view="+id;
         }
 
     </script>

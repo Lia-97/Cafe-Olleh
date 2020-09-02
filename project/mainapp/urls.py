@@ -12,5 +12,9 @@ urlpatterns = [
     path('view/', views.view, name='view'),
     path('islike/', views.islike, name='islike'),
     path('notlike/', views.notlike, name='notlike'),
-    # path('delete/', views.delete, name='delete'),
+    path('update_cnt/', views.update_cnt, name='update_cnt'),
+    path('mypage/', views.mypage, name='mypage'),
+    path('userpost/', views.userpost, name='userpost'),
+    path('remove/', views.remove, name='remove'),
+    path('update/', views.update, name='update'),
 ]
