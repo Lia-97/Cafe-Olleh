@@ -30,31 +30,30 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fb0d380e73fcc8f1b1b06a0e54692212"></script>
         <style>
-        .body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
-        .w3-bar-block .w3-bar-item {padding:20px}
+            .body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+            .w3-bar-block .w3-bar-item {padding:20px}
 
-        .hyunhobackground {
-          background : url(/static/coffeeapp/parallax-simple.jpg) center;
-          background-size : cover;
-        }
-        #map{
-                height:600px;
-                width:100%;
-                margin-top:20px;
-        }
+            #map{
+                    height:600px;
+                    width:100%;
+                    margin-top:20px;
+            }
+            .git:hover{
+                    opacity:0.5;
+                }
 
-        .customoverlay {position:relative;bottom:50px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
-        .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-        .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
-        .customoverlay .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;}
-        .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+            .customoverlay {position:relative;bottom:50px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
+            .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+            .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
+            .customoverlay .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:14px;font-weight:bold;}
+            .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 
-        .label {position:relative;bottom:55px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
-        .label:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-        .label a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
-        .label .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:12px;font-weight:bold;}
-        .label .location {display:block;text-align:center;color:#b3b3b3;background:#fff;padding:7px 15px;font-size:6px;}
-        .label:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+            .label {position:relative;bottom:55px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;}
+            .label:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+            .label a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: white; no-repeat right 14px center;}
+            .label .title {display:block;text-align:center;background:#fff;padding:10px 15px;font-size:12px;font-weight:bold;}
+            .label .location {display:block;text-align:center;color:#b3b3b3;background:#fff;padding:7px 15px;font-size:6px;}
+            .label:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
         </style>
 </head>
 
@@ -74,7 +73,7 @@
                       <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
                       <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
                       <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
-                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
+                      <li><a href="{% url 'post'%}" style="font-family: 'Poppins', sans-serif;">Support</a></li>
                       {% if user_name %}
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
@@ -196,55 +195,49 @@
 
 
         <!-- start footer Area -->
-        <footer class="footer-area section-gap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-md-6 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h6>About Us</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.
-                            </p>
-                            <p class="footer-text">
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-5  col-md-6 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h6>Newsletter</h6>
-                            <p>Stay update with our latest</p>
-                            <div class="" id="mc_embed_signup">
-                                <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
-                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
-                                        <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
-                                        <div style="position: absolute; left: -5000px;">
-                                            <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
-                                        </div>
+		<footer class="footer-area section-gap">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-5 col-md-6 col-sm-6">
+						<div class="single-footer-widget">
+							<h6>About Us</h6>
 
-                                    <div class="info pt-20"></div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6 col-sm-6 social-widget">
-                        <div class="single-footer-widget">
-                            <h6>Follow Us</h6>
-                            <p>Let us be social</p>
-                            <div class="footer-social d-flex align-items-center">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
-                                <a href="#"><i class="fa fa-behance"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- End footer Area -->
+							<a href="https://github.com/N-analyst" target="_blank"><img class="git" src="/static/img/git.png" style="width:50px;"></a>
+								N-analyst<br><br>
+							<a href="https://github.com/Lia-97" target="_blank"><img class="git" src="/static/img/git.png" style="width:50px;"></a>
+								Lia-97<br><br>
+							<a href="https://github.com/Hsquare-get" target="_blank"><img class="git" src="/static/img/git.png" style="width:50px;"></a>
+								Hsquare-get <br><br>
+
+
+						</div>
+					</div>
+					<div class="col-lg-5  col-md-6 col-sm-6" style="position:relative; right:100px;">
+						<div class="single-footer-widget">
+							<h6>Story</h6>
+							<p>우리는 파편적인 카페정보에 불편함을 느껴 해당 프로젝트 시작하였습니다. 더 많은 이야기가 궁금하면 아이콘을 클릭해 주세요.</p>
+							<p class="footer-text">
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
+						<div class="single-footer-widget">
+							<h6>Follow Us</h6>
+							<p>Let us be social</p>
+							<div class="footer-social d-flex align-items-center">
+								<a href="https://www.instagram.com/cafe__olleh/?hl=ko" target="_blank"><i class="fa fa-instagram"></i></a>
+								<a href="#"><i class="fa fa-github" target="_blank"></i></a>
+								<a href="#"><i class="fa fa-dribbble" target="_blank"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- End footer Area -->
 
         <script src="/static/js/vendor/jquery-2.2.4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

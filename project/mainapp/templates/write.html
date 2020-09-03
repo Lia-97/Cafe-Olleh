@@ -35,9 +35,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
     <style>
-    .body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
-    .w3-bar-block .w3-bar-item {padding:20px}
-
+        .body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+        .w3-bar-block .w3-bar-item {padding:20px}
+        .git:hover{
+            opacity:0.5;
+        }
     </style>
 </head>
 
@@ -58,12 +60,12 @@
                         <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
                         <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
                         <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
-                        <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
+                        <li><a href="{% url 'post'%}" style="font-family: 'Poppins', sans-serif;">Support</a></li>
                         {% if user_name %}
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
                                 <li><a href="{% url 'mypage' %}">내 정보</a></li>
-                                <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
+                                <li id="logout"><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>
                         {% else %}
@@ -90,7 +92,7 @@
             <textarea class="form-control" rows="8" style="width:70%;" id="content" name="content" required></textarea>
             <script>
                 $("#content").attr("placeholder","지도 정보에 문제가 있으신가요? 건의사항을 자유롭게 작성해주세요.\n"+
-                                                 "- 삼성역점 이디야의 폐업했어요.\n"+
+                                                 "- 삼성역점 이디야 폐업했어요.\n"+
                                                  "- 7호선 사가정역의 탐앤탐스 정보가 없어요.\n\n"+
                                                  "서비스에 문제가 있으신가요?\n"+
                                                  "- 빽다방 추가해주세요.\n"+
@@ -98,12 +100,11 @@
             </script>
         </div>
 
-        <button id="sub_btn" type="submit" class="btn btn-secondary">제출</button>
-        <button type='reset' class='btn btn-secondary'>재작성</button>
+        <button id="sub_btn" type="submit" style="background-color:#b68834; border-color:#b68834; color:white; opacity:0.8;" class="btn btn-secondary">제출</button>
         <script>
           if("{{view}}"){
             document.write("<a href='javascript:history.back(-1)'><button type='button' class='btn btn-secondary'>취소</button></a>")
-            $('h2').val("건의 사항(수정)");
+            $('h2').text("건의 사항(수정)");
             //띄어쓰기 여러개를 표현
             $('#title').val("{{view.title|escapejs}}");
             //개행처리는 <br>로 대체
@@ -111,7 +112,9 @@
             str=str.replace(/<br>/g,"\n");
             $('#content').html(str);
             $('#sub_btn').html("수정 완료");
+            $('#sub_btn').attr("style","");
             $('#write_form').attr("action","{% url 'update'%}?id="+{{view.id}});
+            $('#logout').empty();
           }
         </script>
       </form>
@@ -120,55 +123,49 @@
 
 
         <!-- start footer Area -->
-        <footer class="footer-area section-gap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-md-6 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h6>About Us</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.
-                            </p>
-                            <p class="footer-text">
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-5  col-md-6 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h6>Newsletter</h6>
-                            <p>Stay update with our latest</p>
-                            <div class="" id="mc_embed_signup">
-                                <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
-                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
-                                        <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
-                                        <div style="position: absolute; left: -5000px;">
-                                            <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
-                                        </div>
+		<footer class="footer-area section-gap">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-5 col-md-6 col-sm-6">
+						<div class="single-footer-widget">
+							<h6>About Us</h6>
 
-                                    <div class="info pt-20"></div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6 col-sm-6 social-widget">
-                        <div class="single-footer-widget">
-                            <h6>Follow Us</h6>
-                            <p>Let us be social</p>
-                            <div class="footer-social d-flex align-items-center">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
-                                <a href="#"><i class="fa fa-behance"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- End footer Area -->
+							<a href="https://github.com/N-analyst" target="_blank"><img class="git" src="/static/img/git.png" style="width:50px;"></a>
+								N-analyst<br><br>
+							<a href="https://github.com/Lia-97" target="_blank"><img class="git" src="/static/img/git.png" style="width:50px;"></a>
+								Lia-97<br><br>
+							<a href="https://github.com/Hsquare-get" target="_blank"><img class="git" src="/static/img/git.png" style="width:50px;"></a>
+								Hsquare-get <br><br>
+
+
+						</div>
+					</div>
+					<div class="col-lg-5  col-md-6 col-sm-6" style="position:relative; right:100px;">
+						<div class="single-footer-widget">
+							<h6>Story</h6>
+							<p>우리는 파편적인 카페정보에 불편함을 느껴 해당 프로젝트 시작하였습니다. 더 많은 이야기가 궁금하면 아이콘을 클릭해 주세요.</p>
+							<p class="footer-text">
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
+						<div class="single-footer-widget">
+							<h6>Follow Us</h6>
+							<p>Let us be social</p>
+							<div class="footer-social d-flex align-items-center">
+								<a href="https://www.instagram.com/cafe__olleh/?hl=ko" target="_blank"><i class="fa fa-instagram"></i></a>
+								<a href="#"><i class="fa fa-github" target="_blank"></i></a>
+								<a href="#"><i class="fa fa-dribbble" target="_blank"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- End footer Area -->
 
 
     <script src="/static/js/vendor/jquery-2.2.4.min.js"></script>

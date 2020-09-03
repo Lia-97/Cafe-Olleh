@@ -31,9 +31,9 @@ enToko={ "Americano":"아메리카노",
          "Pascucci":"파스쿠찌"}
 
 adv={"Ediyaevent":'https://www.ediya.com/contents/event.html?tb_name=event&bbs_section=view&Ctg=&page=1&idx=122',
-     "Pascuccievent":"http://www.caffe-pascucci.co.kr/event/eventView.asp?teSeq=431",
-     "Angelinusevent":"http://www.angelinus.com/Event/Event_View.asp?Mode=VIEW&EventType=Event&Idx=626&SearchEventGubun=0"
-     }
+     "Pascuccievent":"http://www.caffe-pascucci.co.kr/event/eventView.asp?teSeq=433",
+     "Tomntomsevent":"https://www.tomntoms.com/event/event.html?bmain=view&uid=7&mode=",
+     "Hollysevent":"https://www.hollys.co.kr/news/event/view.do?idx=230&pageNo=1&division="}
 
 
 
@@ -61,7 +61,11 @@ def logout(request):
     if 'user' in request.session:
         del request.session['email']
         del request.session['user']
-        return redirect(request.GET['next'])
+
+        if request.GET['next'] == "/mainapp/mypage/":
+            return redirect("/mainapp/home/")
+        else:
+            return redirect(request.GET['next'])
 
 def best9(request):
     context={}
@@ -148,6 +152,8 @@ def write(request):
     id=request.GET.get('id',None)
 
     if id:
+        if 'user' in request.session:
+            context['user_name']=request.session.get('user')
         view=Post.objects.get(id=id)
         context["view"]=view
         return render(request,'write.html',context)
@@ -225,6 +231,7 @@ def mypage(request):
         context['user_email']=request.session['email']
         email=request.session['email']
         user_post = Post.objects.filter(writer_id=email)
+        user_post=user_post.order_by('-writedate')
         context['Post']=user_post
 
     return render(request,'mypage.html',context)
