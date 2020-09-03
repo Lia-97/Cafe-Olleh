@@ -51,15 +51,15 @@
                   </div>
                   <nav id="nav-menu-container">
                     <ul class="nav-menu">
-                      <li class="menu-active" style="font-family: 'Poppins', sans-serif;"><a href="#home">Home</a></li>
-                      <li><a href="#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
-                      <li><a href="#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
-                      <li><a href="#coffee" style="font-family: 'Poppins', sans-serif;">Coffee</a></li>
-                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">FAQ</a></li>
+                      <li class="menu-active" style="font-family: 'Poppins', sans-serif;"><a href="{% url 'home' %}">Home</a></li>
+                      <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
+                      <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
+                      <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
+                      <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
                       {% if user_name %}
                         <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
                             <ul>
-                              <li><a href="generic.html" style="font-family: 'Poppins', sans-serif;">내 정보</a></li>
+                              <li><a href="{% url 'mypage' %}" style="font-family: 'Poppins', sans-serif;">내 정보</a></li>
                               <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
                             </ul>
                         </li>
@@ -79,7 +79,7 @@
         <div class="w3-row-padding w3-padding-16 w3-center"  id="food">
             {% for key,value in coffee_list.items%}
                 <div class="w3-quarter" style="margin-top:25px;">
-                    <img src="/static/img/Angelinus.jpg" alt="Steak" style="width:50%">
+                    <img src="/static/img/{{key}}.jpg" alt="Steak" style="width:100px; height:100px;">
                     <h3>{{key}}</h3>
                     <p>{{value}}</p>
                     <a href="{% url 'cafemap'%}?store={{key}}" class="primary-btn text-uppercase" style="background-color:#423433; color:white;">근처 매장 보기</a>

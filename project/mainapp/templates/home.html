@@ -28,34 +28,39 @@
 		<link rel="stylesheet" href="/static/css/animate.min.css">
 		<link rel="stylesheet" href="/static/css/owl.carousel.css">
 		<link rel="stylesheet" href="/static/css/main.css">
+		<!--W3C css-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 	</head>
 	<body>
 
 		  <header id="header" id="home" style="font-" >
 			<div class="container">
 				<div class="row align-items-center justify-content-between d-flex">
-				  <div id="logo">
+				  <div id="logo" style="margin-right:350px;">
 					<a href="{% url 'home' %}">
 						<img src="/static/img/logo-new.png" style="width:40px; float:left;" alt="" title="" />
-						<h1 style="color:white; float:left; margin-left:20px; ">Cafe Olleh?</h1>
+						<h1 style="font-family: 'Poppins', sans-serif;color:white; float:left; margin-left:20px; ">Cafe Olleh?</h1>
 					</a>
 				  </div>
 				  <nav id="nav-menu-container">
 					<ul class="nav-menu">
-					  <li class="menu-active"><a href="#home">Home</a></li>
-					  <li><a href="#event">Event</a></li>
-					  <li><a href="#best9">Best 9</a></li>
-					  <li><a href="{% url 'brandmenu'%}">Menu</a></li>
-					  <li><a href="#review">FAQ</a></li>
+					  <li class="menu-active"><a href="#home" style="font-family: 'Poppins', sans-serif;color:white; text-decoration:none;">Home</a></li>
+					  <li><a href="#event" style="font-family: 'Poppins', sans-serif;color:white; text-decoration:none;">Event</a></li>
+					  <li><a href="#best9" style="font-family: 'Poppins', sans-serif;color:white; text-decoration:none;">Best 9</a></li>
+					  <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;color:white; text-decoration:none;">Menu</a></li>
+					  <li><a href="{% url 'post'%}" style="font-family: 'Poppins', sans-serif;color:white; text-decoration:none;">Support</a></li>
 					  {% if user_name %}
-						<li><a href="#" onclick="return false;">{{user_name}} 님!</a>
+						<li><a href="#" onclick="return false;" style="font-family: 'Poppins', sans-serif;color:white; text-decoration:none;">{{user_name}} 님!</a>
 							<ul>
-							  <li><a href="generic.html">내 정보</a></li>
+							  <li><a href="{% url 'mypage' %}">내 정보</a></li>
 							  <li><a href="{% url 'logout'%}?next={{request.get_full_path}}">Log Out!!</a></li>
 							</ul>
 						</li>
 					  {% else %}
-						<li><a href="{% url 'usersapp:login'%}?next={{request.get_full_path}}">Log in</a></li>
+						<li><a href="{% url 'usersapp:login'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;color:white; text-decoration:none;">Log in</a></li>
 					  {% endif %}
 
 					</ul>
@@ -98,28 +103,7 @@
 		</section>
 		<!-- End banner Area -->
 
-		<!-- Start video-sec Area -->
-		<section class="video-sec-area pb-100 pt-40" id="event">
-			<div class="container">
-				<div class="row justify-content-start align-items-center">
-					<div class="col-lg-6 video-right justify-content-center align-items-center d-flex">
-						<div class="overlay overlay-bg"></div>
-						<a class="play-btn" href="https://www.youtube.com/watch?v=ARA0AxrnHdM"><img class="img-fluid" src="img/play-icon.png" alt=""></a>
-					</div>
-					<div class="col-lg-6 video-left">
-						<h6>Live Coffee making process.</h6>
-						<h1>We Telecast our <br>
-						Coffee Making Live</h1>
-						<p><span>We are here to listen from you deliver exellence</span></p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temp or incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
-						</p>
-						<img class="img-fluid" src="/static/img/signature.png" alt="">
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- End video-sec Area -->
+
 
 		<!-- Start menu Area -->
 		<section class="menu-area section-gap" id="best9">
@@ -127,7 +111,7 @@
 				<div class="row d-flex justify-content-center">
 					<div class="menu-content pb-60 col-lg-10">
 						<div class="title text-center">
-							<h1 class="mb-10">Best Seller</h1>
+							<h1 class="mb-10" style="font-family: 'Poppins', sans-serif;">Best Seller</h1>
 							<p>많이 찾는 메뉴 한번에 보기</p>
 						</div>
 					</div>
@@ -137,12 +121,12 @@
 						<div class="col-lg-4">
 							<div class="single-menu">
 								<div class="title-div justify-content-between d-flex">
-									<a href="{%url 'best9'%}?product={{name}}"><h4>{{name}}</h4></a>
+									<a href="{%url 'best9'%}?product={{name}}" style="font-family: 'Poppins', sans-serif;color:black; text-decoration:none;"><h4>{{name}}</h4></a>
 									<p class="price float-right">
-										$49
+										<- Go!
 									</p>
 								</div>
-								<p style="font-size:12px;">
+								<p style="font-family: 'Poppins', sans-serif;font-size:12px;">
 									{{comment}}
 								</p>
 							</div>
@@ -153,159 +137,57 @@
 		</section>
 		<!-- End menu Area -->
 
-		<!-- Start gallery Area -->
-		<section class="gallery-area section-gap" id="gallery">
+		  <!-- Start video-sec Area -->
+		<section class="video-sec-area pb-100 pt-40" id="event">
+
 			<div class="container">
-				<div class="row d-flex justify-content-center">
-					<div class="menu-content pb-60 col-lg-10">
-						<div class="title text-center">
-							<h1 class="mb-10">What kind of Coffee we serve for you</h1>
-							<p>Who are in extremely love with eco friendly system.</p>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-4">
-						<a href="img/g1.jpg" class="img-pop-home">
-							<img class="img-fluid" src="/static/img/g1.jpg" alt="">
-						</a>
-						<a href="img/g2.jpg" class="img-pop-home">
-							<img class="img-fluid" src="/static/img/g2.jpg" alt="">
-						</a>
-					</div>
-					<div class="col-lg-8">
-						<a href="img/g3.jpg" class="img-pop-home">
-							<img class="img-fluid" src="/static/img/g3.jpg" alt="">
-						</a>
-						<div class="row">
-							<div class="col-lg-6">
-								<a href="img/g4.jpg" class="img-pop-home">
-									<img class="img-fluid" src="/static/img/g4.jpg" alt="">
+				<div style="text-align:center;"><h1 style="font-family: 'Poppins', sans-serif;">EVENT</h1></div>
+			  	<br>
+				<div id="myCarousel" class="carousel slide" data-ride="carousel">
+				<!-- Indicators -->
+				<ol class="carousel-indicators" style="color:black;">
+				  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				  <li data-target="#myCarousel" data-slide-to="1"></li>
+				  <li data-target="#myCarousel" data-slide-to="2"></li>
+				  <li data-target="#myCarousel" data-slide-to="3"></li>
+
+				</ol>
+
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner">
+
+					{% for key,value in adv.items %}
+						{% if key == "Ediyaevent"%}
+							<div class="item active">
+							<a href="{{value}}" target="_black">
+								<img src="/static/img/{{key}}.jpg" style=" width: 600px; height: 250px; margin:auto;">
+							</a>
+							</div>
+						{% else %}
+							<div class="item">
+								<a href="{{value}}" target="_black">
+								<img src="/static/img/{{key}}.jpg" style="width: 600px; height: 250px; margin:auto;">
 								</a>
 							</div>
-							<div class="col-lg-6">
-								<a href="img/g5.jpg" class="img-pop-home">
-									<img class="img-fluid" src="/static/img/g5.jpg" alt="">
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- End gallery Area -->
 
-		<!-- Start review Area -->
-		<section class="review-area section-gap" id="review">
-			<div class="container">
-				<div class="row d-flex justify-content-center">
-					<div class="menu-content pb-60 col-lg-10">
-						<div class="title text-center">
-							<h1 class="mb-10">What kind of Coffee we serve for you</h1>
-							<p>Who are in extremely love with eco friendly system.</p>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-6 col-md-6 single-review">
-						<img src="/static/img/r1.png" alt="">
-						<div class="title d-flex flex-row">
-							<h4>lorem ipusm</h4>
-							<div class="star">
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star"></span>
-								<span class="fa fa-star"></span>
-							</div>
-						</div>
-						<p>
-							Accessories Here you can find the best computer accessory for your laptop, monitor, printer, scanner, speaker. Here you can find the best computer accessory for your laptop, monitor, printer, scanner, speaker.
-						</p>
-					</div>
-					<div class="col-lg-6 col-md-6 single-review">
-						<img src="/static/img/r2.png" alt="">
-						<div class="title d-flex flex-row">
-							<h4>lorem ipusm</h4>
-							<div class="star">
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star"></span>
-								<span class="fa fa-star"></span>
-								<span class="fa fa-star"></span>
-							</div>
-						</div>
-						<p>
-							Accessories Here you can find the best computer accessory for your laptop, monitor, printer, scanner, speaker. Here you can find the best computer accessory for your laptop, monitor, printer, scanner, speaker.
-						</p>
-					</div>
-				</div>
-				<div class="row counter-row">
-					<div class="col-lg-3 col-md-6 single-counter">
-						<h1 class="counter">2536</h1>
-						<p>Happy Client</p>
-					</div>
-					<div class="col-lg-3 col-md-6 single-counter">
-						<h1 class="counter">7562</h1>
-						<p>Total Projects</p>
-					</div>
-					<div class="col-lg-3 col-md-6 single-counter">
-						<h1 class="counter">2013</h1>
-						<p>Cups Coffee</p>
-					</div>
-					<div class="col-lg-3 col-md-6 single-counter">
-						<h1 class="counter">10536</h1>
-						<p>Total Submitted</p>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- End review Area -->
+						{% endif%}
+					{% endfor%}
 
-		<!-- Start blog Area -->
-		<section class="blog-area section-gap" id="blog">
-			<div class="container">
-				<div class="row d-flex justify-content-center">
-					<div class="menu-content pb-60 col-lg-10">
-						<div class="title text-center">
-							<h1 class="mb-10">What kind of Coffee we serve for you</h1>
-							<p>Who are in extremely love with eco friendly system.</p>
-						</div>
-					</div>
 				</div>
-				<div class="row">
-					<div class="col-lg-6 col-md-6 single-blog">
-						<img class="img-fluid" src="/static/img/b1.jpg" alt="">
-						<ul class="post-tags">
-							<li><a href="#">Travel</a></li>
-							<li><a href="#">Life Style</a></li>
-						</ul>
-						<a href="#"><h4>Portable latest Fashion for young women</h4></a>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore  et dolore.
-						</p>
-						<p class="post-date">
-							31st January, 2018
-						</p>
-					</div>
-					<div class="col-lg-6 col-md-6 single-blog">
-						<img class="img-fluid" src="/static/img/b2.jpg" alt="">
-						<ul class="post-tags">
-							<li><a href="#">Travel</a></li>
-							<li><a href="#">Life Style</a></li>
-						</ul>
-						<a href="#"><h4>Portable latest Fashion for young women</h4></a>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore  et dolore.
-						</p>
-						<p class="post-date">
-							31st January, 2018
-						</p>
-					</div>
-				</div>
+
+				<!-- Left and right controls -->
+				<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+				  <span class="glyphicon glyphicon-chevron-left"></span>
+				  <span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#myCarousel" data-slide="next">
+				  <span class="glyphicon glyphicon-chevron-right"></span>
+				  <span class="sr-only">Next</span>
+				</a>
+			  </div>
 			</div>
 		</section>
-		<!-- End blog Area -->
+		<!-- End video-sec Area -->
 
 
 		<!-- start footer Area -->

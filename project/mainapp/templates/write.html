@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="codepixer">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Coffee</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!--CSS============================================= -->
+    <link rel="stylesheet" href="/static/css/linearicons.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/magnific-popup.css">
+    <link rel="stylesheet" href="/static/css/nice-select.css">
+    <link rel="stylesheet" href="/static/css/animate.min.css">
+    <link rel="stylesheet" href="/static/css/owl.carousel.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+    <!--W3C Post-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <style>
+    .body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+    .w3-bar-block .w3-bar-item {padding:20px}
+
+    </style>
+</head>
+
+<body>
+    <header id="header" id="home" style="background-color:#423433;">
+        <div class="container">
+            <div class="row align-items-center justify-content-between d-flex">
+                <div id="logo">
+                    <a href="{% url 'home' %}">
+                        <img src="/static/img/logo-new.png" style="width:40px; float:left;" alt="" title="" />
+                        <h1 style="color:white; float:left; margin-left:20px; font-family: 'Poppins', sans-serif;">Cafe Olleh?</h1>
+                    </a>
+                </div>
+
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active" style="font-family: 'Poppins', sans-serif;"><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'home'%}#event" style="font-family: 'Poppins', sans-serif;">Event</a></li>
+                        <li><a href="{% url 'home'%}#best9" style="font-family: 'Poppins', sans-serif;">Best 9</a></li>
+                        <li><a href="{% url 'brandmenu'%}" style="font-family: 'Poppins', sans-serif;">Menu</a></li>
+                        <li><a href="#review" style="font-family: 'Poppins', sans-serif;">Support</a></li>
+                        {% if user_name %}
+                        <li><a href="#" onclick="return false;">{{user_name}} 님!</a>
+                            <ul>
+                                <li><a href="{% url 'mypage' %}">내 정보</a></li>
+                                <li><a href="{% url 'logout'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log Out!!</a></li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="{% url 'usersapp:login'%}?next={{request.get_full_path}}" style="font-family: 'Poppins', sans-serif;">Log in</a></li>
+                        {% endif %}
+                    </ul>
+                </nav><!-- #nav-menu-container -->
+            </div>
+        </div>
+    </header><!-- #header -->
+
+    <!-- Start Write area -->
+    <div class="container" style="margin-top:100px; margin-bottom:50px;">
+    <h2>건의 사항</h2>
+      <form id="write_form" method="POST" action="{% url 'post' %}" >
+        {% csrf_token %}
+        <div class="form-group" style="margin-top:20px;">
+          <label for="title" style="font-weight:bold;">제목:</label>
+          <input type="text" class="form-control" style="width:70%;" id="title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="content" style="font-weight:bold;">수정 요청:</label>
+            <textarea class="form-control" rows="8" style="width:70%;" id="content" name="content" required></textarea>
+            <script>
+                $("#content").attr("placeholder","지도 정보에 문제가 있으신가요? 건의사항을 자유롭게 작성해주세요.\n"+
+                                                 "- 삼성역점 이디야의 폐업했어요.\n"+
+                                                 "- 7호선 사가정역의 탐앤탐스 정보가 없어요.\n\n"+
+                                                 "서비스에 문제가 있으신가요?\n"+
+                                                 "- 빽다방 추가해주세요.\n"+
+                                                 "- 스타벅스 신메뉴 나왔어요!");
+            </script>
+        </div>
+
+        <button id="sub_btn" type="submit" class="btn btn-secondary">제출</button>
+        <button type='reset' class='btn btn-secondary'>재작성</button>
+        <script>
+          if("{{view}}"){
+            document.write("<a href='javascript:history.back(-1)'><button type='button' class='btn btn-secondary'>취소</button></a>")
+            $('h2').val("건의 사항(수정)");
+            //띄어쓰기 여러개를 표현
+            $('#title').val("{{view.title|escapejs}}");
+            //개행처리는 <br>로 대체
+            var str="{{view.content|linebreaksbr}}"
+            str=str.replace(/<br>/g,"\n");
+            $('#content').html(str);
+            $('#sub_btn').html("수정 완료");
+            $('#write_form').attr("action","{% url 'update'%}?id="+{{view.id}});
+          }
+        </script>
+      </form>
+    </div>
+    <!-- end Write area-->
+
+
+        <!-- start footer Area -->
+        <footer class="footer-area section-gap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h6>About Us</h6>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.
+                            </p>
+                            <p class="footer-text">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-5  col-md-6 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h6>Newsletter</h6>
+                            <p>Stay update with our latest</p>
+                            <div class="" id="mc_embed_signup">
+                                <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
+                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
+                                        <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                                        <div style="position: absolute; left: -5000px;">
+                                            <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+                                        </div>
+
+                                    <div class="info pt-20"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 social-widget">
+                        <div class="single-footer-widget">
+                            <h6>Follow Us</h6>
+                            <p>Let us be social</p>
+                            <div class="footer-social d-flex align-items-center">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-dribbble"></i></a>
+                                <a href="#"><i class="fa fa-behance"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End footer Area -->
+
+
+    <script src="/static/js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="/static/js/vendor/bootstrap.min.js"></script>
+    <script src="/static/js/easing.min.js"></script>
+    <script src="/static/js/hoverIntent.js"></script>
+    <script src="/static/js/superfish.min.js"></script>
+    <script src="/static/js/jquery.ajaxchimp.min.js"></script>
+    <script src="/static/js/jquery.magnific-popup.min.js"></script>
+    <script src="/static/js/owl.carousel.min.js"></script>
+    <script src="/static/js/jquery.sticky.js"></script>
+    <script src="/static/js/jquery.nice-select.min.js"></script>
+    <script src="/static/js/parallax.min.js"></script>
+    <script src="/static/js/waypoints.min.js"></script>
+    <script src="/static/js/jquery.counterup.min.js"></script>
+    <script src="/static/js/mail-script.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

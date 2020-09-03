@@ -11,6 +11,7 @@ def login(request):
     if 'next' not in request.session:
         request.session['next']=request.GET.get('next',None)
 
+
     if request.method == 'POST': #POST방식으로 요청받으면, useremail에는 POST방식으로 받아온 input name이 email인 value값을 가져오고,
         # 그 값이 없으면 오류가 아니라 None으로 처리한다.(하지만 input 방식이 required이기 때문에 입력 받은 값이 없을 수는 없다.)
         useremail = request.POST.get('email', None)
@@ -27,9 +28,14 @@ def login(request):
             user_name=user.username
             if check_password(password, user.password):
                 #입력한 비밀번호와 db에 등록된 user.password를 비교해서 같다면,
+                request.session['email']=useremail
                 request.session['user'] = user_name
                 context['next']=request.session['next']
                 del request.session['next']
+
+                if 'error' in request.session:
+                    del request.session['error']
+
                 #session에 user키의 value를 위에서 정의한 user_name으로 저장한다.
                 return redirect(context['next'])
             #로그인에 성공했으면 /mainapp/home/으로 redirect
@@ -56,21 +62,26 @@ def register(request):
         # POST방식으로 받아온 input name이 password인 value를 password에 저장한다.
         re_password = request.POST.get('re-password', None)
         res_data={}
-        if password != re_password:
-            res_data['error']='비밀번호가 다릅니다.'
-            return render(request, 'register.html', res_data)
-        #password가 re_paassword와 다르면, 비어있던 res_data 딕셔너리에 key는 error, value는 비번이 다릅니다를 저장하고,
-        #그 res_data를 담아서 register.html로 전달한다.
+        try:
+            user=Users.objects.get(useremail=useremail)
+
+        except Users.DoesNotExist:
+            if password != re_password:
+                res_data['error'] = '비밀번호가 다릅니다.'
+                return render(request, 'register.html', res_data)
+            else:
+                users = Users(
+                    useremail=useremail,
+                    username=username,
+                    password=make_password(password)
+                )
+                users.save()
+                return render(request, 'login.html')
+
         else:
-            users = Users(
-                useremail=useremail,
-                username=username,
-                password=make_password(password)
-            )
-            users.save()
-            return render(request,'login.html')
-        #비밀번호와 재입력한 비밀번호가 일치하면, 상단에 정의된 useremail, username, password를 각각 Users 클래스에 저장한다.
-        #그리고 save를 해주고, login.html 렌더한다.
+            res_data['error']="이미 존재하는 이메일 입니다."
+            return render(request, 'register.html', res_data)
+
 
 def forgot(request):
     if request.method == "POST":
