@@ -80,6 +80,7 @@ def best9(request):
         if i>=2 and coffee != None:
             coffee_list[brand]=str(coffee)+"/"+str(cost)+"원"
     context["coffee_list"]=coffee_list
+    print(coffee_list)
 
     if 'user' in request.session:
         context['user_name']=request.session.get('user')
