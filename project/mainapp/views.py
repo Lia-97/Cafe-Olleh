@@ -32,7 +32,11 @@ enToko={ "Americano":"아메리카노",
 
 adv={"Ediyaevent":'https://www.ediya.com/contents/event.html?tb_name=event&bbs_section=view&Ctg=&page=1&idx=122',
      "Pascuccievent":"http://www.caffe-pascucci.co.kr/event/eventView.asp?teSeq=433",
+<<<<<<< HEAD
      "Tomntomsevent":"https://www.tomntoms.com/event/eventView.php?vIDX=562&",
+=======
+     "Tomntomsevent":"https://www.tomntoms.com/event/event.html?bmain=view&uid=7&mode=",
+>>>>>>> 879670d8dbe977902ecac6468182fc1505a136fa
      "Hollysevent":"https://www.hollys.co.kr/news/event/view.do?idx=230&pageNo=1&division="}
 
 
@@ -61,7 +65,11 @@ def logout(request):
     if 'user' in request.session:
         del request.session['email']
         del request.session['user']
-        return redirect(request.GET['next'])
+
+        if request.GET['next'] == "/mainapp/mypage/":
+            return redirect("/mainapp/home/")
+        else:
+            return redirect(request.GET['next'])
 
 def best9(request):
     context={}
@@ -76,6 +84,7 @@ def best9(request):
         if i>=2 and coffee != None:
             coffee_list[brand]=str(coffee)+"/"+str(cost)+"원"
     context["coffee_list"]=coffee_list
+    print(coffee_list)
 
     if 'user' in request.session:
         context['user_name']=request.session.get('user')
@@ -127,11 +136,11 @@ def post(request):
         page = int(request.GET.get('page', 1))
         post=Post.objects.all()
         post=post.order_by('-writedate')
-        paginator = Paginator(post, 5)
+        paginator = Paginator(post, 10)
         pagelist = paginator.get_page(page)
         position = page - 1
         # visible_page: Pagination에 보여질 개수
-        visible_page = 3
+        visible_page = 5
         R = position // visible_page
         visible_list = []
         for i in range((R * visible_page) + 1, ((R + 1) * visible_page) + 1):
@@ -148,6 +157,8 @@ def write(request):
     id=request.GET.get('id',None)
 
     if id:
+        if 'user' in request.session:
+            context['user_name']=request.session.get('user')
         view=Post.objects.get(id=id)
         context["view"]=view
         return render(request,'write.html',context)
@@ -191,15 +202,16 @@ def notlike(request):
     user_id=request.GET['user_id']
 
     if 'user' not in request.session:
-        request.session['error']="먼저 로그인을 해주세요."
-        return redirect("/mainapp/view/?view="+str(post_id))
+        jsonContent={"error":"먼저 로그인을 해주세요."}
+        return JsonResponse(jsonContent, json_dumps_params={'ensure_ascii': False})
+
 
 
     view = Post.objects.get(pk=post_id)
     view.up_like
     recom=recommend(post_id=post_id,useremail_id=user_id)
     recom.save()
-    return redirect('/mainapp/view/?view='+str(post_id))
+    return JsonResponse({}, json_dumps_params={'ensure_ascii':False})
 
 def islike(request):
     post_id = request.GET['post_id']
@@ -208,7 +220,7 @@ def islike(request):
     view.down_like
     recom=recommend.objects.filter(post_id=post_id,useremail_id=user_id)
     recom.delete()
-    return redirect('/mainapp/view/?view='+str(post_id))
+    return JsonResponse({}, json_dumps_params={'ensure_ascii':False})
 
 def update_cnt(request):
     post_id=request.GET['id']
@@ -225,6 +237,7 @@ def mypage(request):
         context['user_email']=request.session['email']
         email=request.session['email']
         user_post = Post.objects.filter(writer_id=email)
+        user_post=user_post.order_by('-writedate')
         context['Post']=user_post
 
     return render(request,'mypage.html',context)
