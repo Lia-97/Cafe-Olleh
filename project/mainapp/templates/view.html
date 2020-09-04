@@ -172,9 +172,15 @@
 
         function notlike(id){
             $.getJSON("{% url 'notlike'%}?user_id={{user_email}}&post_id="+id,function(jsonObj){
-                $("#notlike").attr("onclick","islike({{view.id}})");
-                $("#notlike").text("♥");
-                $("#notlike").attr("id","islike");
+                var error=jsonObj.error;
+                if (error){
+                    alert(error);
+                }
+                else{
+                    $("#notlike").attr("onclick","islike({{view.id}})");
+                    $("#notlike").text("♥");
+                    $("#notlike").attr("id","islike");
+                }
             });
         }
 

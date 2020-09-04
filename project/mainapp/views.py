@@ -198,8 +198,9 @@ def notlike(request):
     user_id=request.GET['user_id']
 
     if 'user' not in request.session:
-        request.session['error']="먼저 로그인을 해주세요."
-        return redirect("/mainapp/view/?view="+str(post_id))
+        jsonContent={"error":"먼저 로그인을 해주세요."}
+        return JsonResponse(jsonContent, json_dumps_params={'ensure_ascii': False})
+
 
 
     view = Post.objects.get(pk=post_id)
