@@ -132,11 +132,11 @@ def post(request):
         page = int(request.GET.get('page', 1))
         post=Post.objects.all()
         post=post.order_by('-writedate')
-        paginator = Paginator(post, 5)
+        paginator = Paginator(post, 10)
         pagelist = paginator.get_page(page)
         position = page - 1
         # visible_page: Pagination에 보여질 개수
-        visible_page = 3
+        visible_page = 5
         R = position // visible_page
         visible_list = []
         for i in range((R * visible_page) + 1, ((R + 1) * visible_page) + 1):
@@ -206,7 +206,7 @@ def notlike(request):
     view.up_like
     recom=recommend(post_id=post_id,useremail_id=user_id)
     recom.save()
-    return redirect('/mainapp/view/?view='+str(post_id))
+    return JsonResponse({}, json_dumps_params={'ensure_ascii':False})
 
 def islike(request):
     post_id = request.GET['post_id']
@@ -215,7 +215,7 @@ def islike(request):
     view.down_like
     recom=recommend.objects.filter(post_id=post_id,useremail_id=user_id)
     recom.delete()
-    return redirect('/mainapp/view/?view='+str(post_id))
+    return JsonResponse({}, json_dumps_params={'ensure_ascii':False})
 
 def update_cnt(request):
     post_id=request.GET['id']

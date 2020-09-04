@@ -150,7 +150,7 @@
 							<p>Let us be social</p>
 							<div class="footer-social d-flex align-items-center">
 								<a href="https://www.instagram.com/cafe__olleh/?hl=ko" target="_blank"><i class="fa fa-instagram"></i></a>
-								<a href="#"><i class="fa fa-github" target="_blank"></i></a>
+								<a href="https://github.com/N-analyst/Cafe_Olleh" target="_blank"><i class="fa fa-github"></i></a>
 								<a href="#"><i class="fa fa-dribbble" target="_blank"></i></a>
 							</div>
 						</div>
@@ -163,11 +163,19 @@
 
     <script>
         function islike(id){
-            location.href="{% url 'islike'%}?user_id={{user_email}}&post_id="+id;
+            $.getJSON("{% url 'islike'%}?user_id={{user_email}}&post_id="+id,function(jsonObj){
+                $("#islike").attr("onclick","notlike({{view.id}})");
+                $("#islike").text("♡");
+                $("#islike").attr("id","notlike");
+            });
         }
 
         function notlike(id){
-            location.href="{% url 'notlike'%}?user_id={{user_email}}&post_id="+id;
+            $.getJSON("{% url 'notlike'%}?user_id={{user_email}}&post_id="+id,function(jsonObj){
+                $("#notlike").attr("onclick","islike({{view.id}})");
+                $("#notlike").text("♥");
+                $("#notlike").attr("id","islike");
+            });
         }
 
         function update(id){
